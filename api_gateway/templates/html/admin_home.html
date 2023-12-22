@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Card Information</title>
+  <link rel="stylesheet" href="./css/home_styles.css">
+</head>
+<body>
+
+<div class="container">
+  <div class="card">
+    <h2>Product Information</h2>
+      <div class="product-info">
+          <p><strong>Product ID:</strong> <span id="productId">-</span></p>
+          <p><strong>Product Name:</strong> <span id="productName">-</span></p>
+          <p><strong>Manufacturer:</strong> <span id="manufacturer">-</span></p>
+          <p><strong>Is Registered:</strong> <span id="isRegistered">-</span></p>
+      </div>
+    <input type="text" placeholder="Insert product name to set or id to get" class="search-bar" id="bar">
+    <div class="buttons">
+      <button id="getButton">Get</button>
+      <button id="setButton">Set</button>
+      <!--<button onclick="uploadContent('button3')">Upload Content 3</button> -->
+    </div>
+    <div id="response"></div>
+  </div>
+</div>
+
+<script src="./js/admin_home.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+</html>
