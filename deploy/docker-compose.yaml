@@ -65,17 +65,19 @@ services:
       - vault_network
 
 
-  # api_gateway:
-  #   build:
-  #     context: ../api_gateway
-  #     dockerfile: Dockerfile
-  #   depends_on:
-  #     - mongo_db
-  #   ports:
-  #     - "8080:8080"
-  #   networks:
-  #     - vault_network
-  #   #restart: always
+  api_gateway:
+    build:
+      context: ../api_gateway
+      dockerfile: Dockerfile
+    depends_on:
+      - mongo_db
+    ports:
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - vault_network
+    #restart: always
     
   
   logger:
