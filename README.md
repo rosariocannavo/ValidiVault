@@ -2,7 +2,9 @@
 # ValidiVault: ethereum blockchain-based property validation
 
 ValidiVault is a distributed ecosystem designed to ensure the integrity and
-traceability of products through the use of blockchain.
+traceability of products through the use of blockchain. 
+
+The system, built according to state-of-the-art design principles, boasts a microservice-oriented architecture, which ensures exceptional scalability and resilience. This is reinforced by the implementation of rate-limiting, circuit-breaking and other mechanisms, as well as an API gateway.
 
 # Technologies Used
 * **Docker**: Docker is a powerful platform that simplifies the process of building, deploying, and managing applications within containers. These containers encapsulate applications and their dependencies, ensuring they run consistently across different environments, from development to production.
@@ -29,7 +31,8 @@ traceability of products through the use of blockchain.
 
 * **Infura**: Infura is a popular infrastructure-as-a-service provider specifically tailored for Ethereum and other blockchain networks. It offers developers easy access to Ethereum nodes without the need to run and maintain their own. Developers use Infura's API endpoints to interact with the Ethereum blockchain, send transactions, query data, and access various functionalities without managing the complexities of running a full Ethereum node. This allows for rapid development of decentralized applications (dApps) and other blockchain-related projects without the overhead of node maintenance or syncing. Infura provides reliable and scalable infrastructure, serving as a gateway for developers to connect their applications to the Ethereum network, making it an essential tool in the Ethereum ecosystem for seamless and efficient blockchain development.
 
-
+# draft system architecture
+![image](https://drive.google.com/uc?export=view&id=149DMOOdhuPcWkt2IoA7apSeFe6cE8r25)
 ## Run Locally
 Install and Run Ganache client and create a local ethereum Blockchain
 ```bash
@@ -229,3 +232,8 @@ Run the following command:
 ```bash
 truffle test 
 ```
+
+## Made by
+
+- [@rosariocannavo](https://github.com/rosariocannavo)
+
