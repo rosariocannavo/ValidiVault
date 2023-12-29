@@ -226,12 +226,19 @@ Go to Truffle project
 ```bash
 cd Truffle 
 ```
-
 Run the following command:
 
 ```bash
 truffle test 
 ```
+## Useful links 
+
+| Container     | URL                                             | Description                           |
+| ------------- | ----------------------------------------------- | ------------------------------------- |
+| MongoExpress  | http://localhost:8083                           | Mongo Express dashboard               |
+| RedisCommander| http://localhost:8081                           | Redis Commander dashboard             |
+| NATS          | https://natsdashboard.com/                      | NATS dashboard                        |
+
 
 ## Made by
 
