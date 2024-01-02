@@ -1,3 +1,7 @@
+const HDWalletProvider = require('@truffle/hdwallet-provider');
+require('dotenv').config();
+const { PRIVATE_KEY, PROJECT_ID } = process.env;
+
 /**
  * Use this file to configure your truffle project. It's seeded with some
  * common settings for different networks and features like migrations,
@@ -62,6 +66,16 @@ module.exports = {
       host: "localhost",
       port: 7545,
       network_id: "*"
+    },
+
+    goerli: {
+      provider: () => new HDWalletProvider(PRIVATE_KEY, `https://goerli.infura.io/v3/${PROJECT_ID}`),
+      network_id: 5,
+      gas: 5500000,         // Gas limit used for deploys
+      gasPrice: 20000000000,  // 20 gwei (in wei)
+      confirmations: 2,      // # of confs to wait between deployments
+      timeoutBlocks: 200,    // # of blocks before a deployment times out
+      skipDryRun: true       // Skip dry run before migrations? (default: false for public nets )
     }
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
