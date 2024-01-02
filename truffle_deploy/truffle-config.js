@@ -68,8 +68,8 @@ module.exports = {
       network_id: "*"
     },
 
-    goerli: {
-      provider: () => new HDWalletProvider(PRIVATE_KEY, `https://goerli.infura.io/v3/${PROJECT_ID}`),
+    sepolia: {
+      provider: () => new HDWalletProvider(PRIVATE_KEY, `https://sepolia.infura.io/v3/${PROJECT_ID}`),
       network_id: 5,
       gas: 5500000,         // Gas limit used for deploys
       gasPrice: 20000000000,  // 20 gwei (in wei)
