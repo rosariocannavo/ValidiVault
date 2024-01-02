@@ -70,7 +70,7 @@ module.exports = {
 
     sepolia: {
       provider: () => new HDWalletProvider(PRIVATE_KEY, `https://sepolia.infura.io/v3/${PROJECT_ID}`),
-      network_id: 5,
+      network_id: 11155111,
       gas: 5500000,         // Gas limit used for deploys
       gasPrice: 20000000000,  // 20 gwei (in wei)
       confirmations: 2,      // # of confs to wait between deployments
