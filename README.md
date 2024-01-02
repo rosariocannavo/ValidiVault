@@ -83,7 +83,12 @@ Sets ganache to the local port so that it is reachable from within containers
 ganache-cli --port 7545 --host 192.168.1.15
 ```
 
-Go to deploy direcytory
+Alternatively, you can use a Sepolia infura account and set the contract address in the config file: 
+```bash
+contract address on Sepolia: 0x6e525aa41918B0eAc5D7278512e9e43428Cd414A
+```
+
+Go to deploy directory
 
 ```bash
 cd deploy 
