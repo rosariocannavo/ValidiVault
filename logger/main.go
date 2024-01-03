@@ -3,42 +3,78 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
+	"github.com/gorilla/websocket"
 	"github.com/nats-io/nats.go"
 )
 
-func main() {
-	// Connect to the NATS server, use docker network DNS name
-	natsURL := "nats://nats:4222"
-	nc, err := nats.Connect(natsURL)
-	if err != nil {
-		log.Fatal(err)
+var (
+	upgrader = websocket.Upgrader{
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
 	}
-	defer nc.Close()
+)
+var nc *nats.Conn
+var subject = "rest_logging"
+var file *os.File
+var err error
 
-	file, err := os.OpenFile("message_log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+func main() {
+	natsURL := "nats://nats:4222"
+
+	//open file
+	file, err = os.OpenFile("message_log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
 
-	// Subject to subscribe to
-	subject := "rest_logging"
+	//connect to nats
+	nc, err = nats.Connect(natsURL)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer nc.Close()
 
-	// Subscribe to the subject and read the messages when up
-	_, err = nc.Subscribe(subject, func(msg *nats.Msg) {
-		fmt.Printf("%s", string(msg.Data))
-		if _, err := file.WriteString(string(msg.Data) + "\n"); err != nil {
-			log.Println("Error writing to file:", err)
-		}
-	})
+	http.HandleFunc("/ws", handleWebSocket)
+	http.HandleFunc("/", serveHTML)
+
+	fmt.Println("Server started on :8000")
+
+	if err := http.ListenAndServe(":8000", nil); err != nil {
+		log.Fatal("ListenAndServe: ", err)
+	}
+}
+
+func handleWebSocket(w http.ResponseWriter, r *http.Request) {
+	ws, err := upgrader.Upgrade(w, r, nil)
+
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println("Subscriber connected and listening...")
+	_, err = nc.Subscribe(subject, func(msg *nats.Msg) {
+		data := string(msg.Data)
+		fmt.Println("msg: ", data)
 
-	// Keep the program running
-	select {}
+		if _, err := file.WriteString(string(msg.Data) + "\n"); err != nil {
+			log.Println("Error writing to file:", err)
+		}
+		err = ws.WriteJSON(data)
+		if err != nil {
+			log.Printf("error: %v", err)
+		}
+	})
+
+	if err != nil {
+		log.Fatal(err)
+		ws.Close()
+	}
+}
+
+func serveHTML(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "index.html")
 }

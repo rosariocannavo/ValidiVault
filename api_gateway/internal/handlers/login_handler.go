@@ -134,7 +134,7 @@ func HandleverifySignature(c *gin.Context) {
 		}
 		http.SetCookie(c.Writer, accountCookie)
 
-		message := fmt.Sprintf("Timestamp: %s | Handler: %s | Status: %d | Response: {%s:%s, %s:%s}", time.Now().UTC().Format(time.RFC3339), "login_handler/HandleverifySignature", http.StatusOK, "token", tokenString, "role", retrievedUser.Role)
+		message := fmt.Sprintf("Timestamp: %s | Handler: %s | Status: %d | Response: {%s:%s, %s:%s}", time.Now().UTC().Format(time.RFC3339), "login_handler/HandleverifySignature", http.StatusOK, "token", "${JWT_TOKEN}", "role", retrievedUser.Role)
 		nats.NatsConnection.PublishMessage(message)
 
 		c.JSON(http.StatusOK, gin.H{"token": tokenString, "role": retrievedUser.Role})

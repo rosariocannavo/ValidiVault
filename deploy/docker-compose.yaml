@@ -86,6 +86,8 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - mongo_db
+    ports:
+      - "8000:8000"
     networks:
       - vault_network
     restart: always
