@@ -19,6 +19,8 @@ The system, built according to state-of-the-art design principles, boasts a micr
 
 * **NATS**: NATS, or the "NATS messaging system," is an open-source, lightweight, and high-performance messaging system designed for building distributed and scalable applications. It follows a publish-subscribe (pub/sub) messaging pattern, allowing different parts of an application or various services to communicate with each other efficiently.
 
+* **WebSocket**: WebSockets are a communication protocol that provides full-duplex communication channels over a single, long-lived connection between a client and a server. Unlike traditional HTTP connections, WebSockets allow real-time, bidirectional communication, enabling both the client and server to send messages to each other at any time without the overhead of repeatedly establishing new connections. This technology is commonly used in applications that require instant data exchange, such as chat applications, online gaming, financial trading platforms, and live data streaming services.
+
 * **Express.js**: Express.js, often referred to as Express, is a popular and minimalist web application framework for Node.js. It simplifies the process of building web applications and APIs by providing a robust set of features and middleware.
 
 * **Web3.js**: Web3.js is a JavaScript library that serves as a bridge between web applications and the Ethereum blockchain. It provides tools and functionalities for developers to interact with Ethereum networks, manage accounts, and interact with smart contracts. With Web3.js, developers can send transactions, query blockchain data, deploy and interact with smart contracts, and handle Ethereum accounts and cryptographic keys. This library enables the creation of decentralized applications (dApps) by facilitating seamless communication and integration with the Ethereum blockchain.
@@ -242,7 +244,9 @@ truffle test
 | ------------- | ----------------------------------------------- | ------------------------------------- |
 | MongoExpress  | http://localhost:8083                           | Mongo Express dashboard               |
 | RedisCommander| http://localhost:8081                           | Redis Commander dashboard             |
+| Api Logger    | https://localhost:8000                          | Api Gateway websocket logger          |
 | NATS          | https://natsdashboard.com/                      | NATS dashboard                        |
+
 
 
 ## Made by
