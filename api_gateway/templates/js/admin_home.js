@@ -1,12 +1,9 @@
 const searchBar = document.querySelector('.search-bar');
 
-document.getElementById("setButton").addEventListener('click', async function () {
-    document.getElementById('response').innerHTML = '';
-
+let account;
+let token;
+async function fetchData() {
     try {
-        let account = null;
-        let token = null;
-
         const response = await fetch('/get-cookie', {
             method: "GET",
         });
@@ -21,6 +18,22 @@ document.getElementById("setButton").addEventListener('click', async function ()
 
         console.log("Account:", account);
         console.log("Token:", token);
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+}
+
+// Call the function when the page loads
+window.addEventListener('load', () => {
+    fetchData();
+});
+
+
+document.getElementById("setButton").addEventListener('click', async function () {
+    document.getElementById('response').innerHTML = '';
+
+    try {
+        
 
         const productName = searchBar.value;
         searchBar.value = '';
@@ -69,24 +82,6 @@ document.getElementById("getButton").addEventListener('click', async function ()
     document.getElementById('bar').style.border = '';
 
     try {
-        let account = null;
-        let token = null;
-
-        const response = await fetch('/get-cookie', {
-            method: "GET",
-        });
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
-        account = data.account;
-        token = data.token;
-
-        console.log("Account:", account);
-        console.log("Token:", token);
-
         const productId = parseInt(searchBar.value);
         searchBar.value = '';
 
