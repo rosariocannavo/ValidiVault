@@ -1,9 +1,11 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
+	"math/big"
 	"net/http"
 	"strings"
 	"time"
@@ -90,10 +92,6 @@ func HandleRegistration(c *gin.Context) {
 		user.MetamaskAddress = userForm.MetamaskAddress
 		user.Nonce = nonce
 
-		//TODO
-		// generate role based on nonce
-
-		//conta il numero di transazioni fatte
 		//payload := strings.NewReader(fmt.Sprintf(`{"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["%s", "latest"],"id":1}`, userForm.MetamaskAddress))
 		payload := strings.NewReader(fmt.Sprintf(`{"jsonrpc":"2.0","method":"eth_getBalance","params":["%s", "latest"],"id":1}`, userForm.MetamaskAddress))
 
@@ -111,9 +109,22 @@ func HandleRegistration(c *gin.Context) {
 		}
 
 		fmt.Println("BODY", string(body))
+		var response models.BlockChainResponse
+		if err := json.Unmarshal(body, &response); err != nil {
+			log.Fatal(err)
+		}
 
-		//per adesso vedo banalmente se l'account corrisponde a quello di ganache che ho su metamask
-		if strings.EqualFold(user.MetamaskAddress, "0x58ad8fEA5d85EDD13C05dC116198801Ff53679B2") {
+		balanceInt, success := new(big.Int).SetString(response.Result[2:], 16)
+		if !success {
+			log.Fatalf("Failed to convert balance to big.Int")
+		}
+
+		// Define a threshold balance in Wei (here, 1 Ether = 10^18 Wei)
+		threshold := new(big.Int).SetUint64(1e18)
+		fmt.Println("balance: ", balanceInt, "tresh", threshold)
+
+		// Compare the balance with the threshold
+		if balanceInt.Cmp(threshold) >= 0 {
 			user.Role = models.Admin
 		} else {
 			user.Role = models.NormalUser
