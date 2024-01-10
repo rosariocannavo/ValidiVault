@@ -1,17 +1,11 @@
 package handlers
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
-	"log"
-	"math/big"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rosariocannavo/api_gateway/config"
 	"github.com/rosariocannavo/api_gateway/internal/db"
 	"github.com/rosariocannavo/api_gateway/internal/models"
 	"github.com/rosariocannavo/api_gateway/internal/nats"
@@ -67,7 +61,6 @@ func HandleRegistration(c *gin.Context) {
 		hashedPwd, err := utils.HashPassword(userForm.Password)
 
 		if err != nil {
-
 			message := fmt.Sprintf("Timestamp: %s | Handler: %s | Status: %d | Response: %s", time.Now().UTC().Format(time.RFC3339), "registration_handler/HandleRegistration", http.StatusInternalServerError, "error: Error hashing password")
 			nats.NatsConnection.PublishMessage(message)
 
@@ -79,7 +72,6 @@ func HandleRegistration(c *gin.Context) {
 		nonce, err := utils.GenerateRandomNonce()
 
 		if err != nil {
-
 			message := fmt.Sprintf("Timestamp: %s | Handler: %s | Status: %d | Response: %s", time.Now().UTC().Format(time.RFC3339), "registration_handler/HandleRegistration", http.StatusInternalServerError, "error: Bad nonce generation")
 			nats.NatsConnection.PublishMessage(message)
 
@@ -91,49 +83,12 @@ func HandleRegistration(c *gin.Context) {
 		user.Password = hashedPwd
 		user.MetamaskAddress = userForm.MetamaskAddress
 		user.Nonce = nonce
-
-		//payload := strings.NewReader(fmt.Sprintf(`{"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["%s", "latest"],"id":1}`, userForm.MetamaskAddress))
-		payload := strings.NewReader(fmt.Sprintf(`{"jsonrpc":"2.0","method":"eth_getBalance","params":["%s", "latest"],"id":1}`, userForm.MetamaskAddress))
-
-		// Sending the HTTP POST request to the Ganache endpoint
-		resp, err := http.Post(config.GanacheURL, "application/json", payload)
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer resp.Body.Close()
-
-		// Reading the response body
-		body, err := io.ReadAll(resp.Body)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		fmt.Println("BODY", string(body))
-		var response models.BlockChainResponse
-		if err := json.Unmarshal(body, &response); err != nil {
-			log.Fatal(err)
-		}
-
-		balanceInt, success := new(big.Int).SetString(response.Result[2:], 16)
-		if !success {
-			log.Fatalf("Failed to convert balance to big.Int")
-		}
-
-		// Define a threshold balance in Wei (here, 1 Ether = 10^18 Wei)
-		threshold := new(big.Int).SetUint64(1e18)
-		fmt.Println("balance: ", balanceInt, "tresh", threshold)
-
-		// Compare the balance with the threshold
-		if balanceInt.Cmp(threshold) >= 0 {
-			user.Role = models.Admin
-		} else {
-			user.Role = models.NormalUser
-		}
+		user.Role = utils.CheckUserBalance(user.MetamaskAddress)
 
 		// write the user in the database
 		userRepo.CreateUser(&user)
 
-		message := fmt.Sprintf("Timestamp: %s | Handler: %s | Status: %d | Response: %s", time.Now().UTC().Format(time.RFC3339), "registration_handler/HandleRegistration", http.StatusOK, "message: User registered succesfully")
+		message := fmt.Sprintf("Timestamp: %s | Handler: %s | Status: %d | Response: %s %s, role: %s", time.Now().UTC().Format(time.RFC3339), "registration_handler/HandleRegistration", http.StatusOK, "message: User registered succesfully. username: ", user.Username, user.Role)
 		nats.NatsConnection.PublishMessage(message)
 
 		c.JSON(http.StatusOK, gin.H{"message": "User registered succesfully"})

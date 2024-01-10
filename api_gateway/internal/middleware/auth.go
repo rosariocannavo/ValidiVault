@@ -16,10 +16,7 @@ func Authenticate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenString := c.GetHeader("Authorization")
 
-		//fmt.Printf(tokenString + "\n")
-
 		if tokenString == "" {
-
 			message := fmt.Sprintf("Timestamp: %s | Handler: %s | Status: %d | Response: %s", time.Now().UTC().Format(time.RFC3339), "middleware/Authenticate", http.StatusUnauthorized, "error: Authorization header is missing")
 			nats.NatsConnection.PublishMessage(message)
 
@@ -33,7 +30,6 @@ func Authenticate() gin.HandlerFunc {
 		})
 
 		if err != nil || !token.Valid {
-
 			message := fmt.Sprintf("Timestamp: %s | Handler: %s | Status: %d | Response: %s", time.Now().UTC().Format(time.RFC3339), "middleware/Authenticate", http.StatusUnauthorized, "error: Invalid token")
 			nats.NatsConnection.PublishMessage(message)
 
@@ -43,6 +39,7 @@ func Authenticate() gin.HandlerFunc {
 		}
 
 		claims, ok := token.Claims.(jwt.MapClaims)
+
 		if !ok {
 			fmt.Println("Invalid token claims")
 			c.Abort()
@@ -55,8 +52,6 @@ func Authenticate() gin.HandlerFunc {
 			return
 		}
 
-		//retrieve information based on the token - could do this in other client
-		//fmt.Println("username authorized", claims["username"])
 		c.Set("claims", claims)
 
 		c.Next()

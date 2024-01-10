@@ -33,32 +33,31 @@ document.getElementById("registerForm").addEventListener("submit", async functio
             // Send POST request to your Go Gin server
             fetch("http://localhost:8080/registration", {
                 method: "POST",
-                //body: formData
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: json
 
             })
-                .then(response => {
-                    // Handle the response as needed
-                    console.log(response);
-                    if (response.status === 403) {
-                        console.log("user already present");
-                        document.getElementById('username').style.border = '2px solid red';
-                        document.getElementById('passwordRegister').style.border = '2px solid red';
-                        document.getElementById('passwordConfirm').style.border = '2px solid red';
+            .then(response => {
+                // Handle the response as needed
+                console.log(response);
+                if (response.status === 403) {
+                    console.log("user already present");
+                    document.getElementById('username').style.border = '2px solid red';
+                    document.getElementById('passwordRegister').style.border = '2px solid red';
+                    document.getElementById('passwordConfirm').style.border = '2px solid red';
 
 
-                        document.getElementById('response').innerHTML = '<p>User or Address already present.</p>';
+                    document.getElementById('response').innerHTML = '<p>User or Address already present.</p>';
 
-                    } else {
-                        window.location.href = '/';
-                    }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                });
+                } else {
+                    window.location.href = '/';
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
 
 
         } else {

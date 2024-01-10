@@ -30,7 +30,6 @@ func NewUserRepository(client *mongo.Client) UserRepository {
 }
 
 func (r *userRepo) FindUser(username string) (*models.User, error) {
-
 	var retrievedUser models.User
 	collection := r.client.Database("my_database").Collection("users")
 

@@ -34,7 +34,8 @@ func (r *RateLimitMiddleware) Handler() gin.HandlerFunc {
 			message := fmt.Sprintf("Timestamp: %s | Handler: %s | Status: %d | Response: %s", time.Now().UTC().Format(time.RFC3339), "middleware/RateLimiter", http.StatusTooManyRequests, "error: Too many requests")
 			nats.NatsConnection.PublishMessage(message)
 
-			c.AbortWithStatusJSON(http.StatusTooManyRequests, gin.H{"error": "Too many requests"})
+			c.HTML(http.StatusTooManyRequests, "error.html", gin.H{})
+			c.Abort()
 			return
 		}
 

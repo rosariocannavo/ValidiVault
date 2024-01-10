@@ -37,7 +37,6 @@ func HandleLogin(c *gin.Context) {
 
 	fmt.Println("username", userForm.Username)
 	if errdb != nil {
-
 		message := fmt.Sprintf("Timestamp: %s | Handler: %s | Status: %d | Response: %s", time.Now().UTC().Format(time.RFC3339), "login_handler/HandleLogin", http.StatusBadRequest, "error: User not present")
 		nats.NatsConnection.PublishMessage(message)
 
@@ -67,14 +66,7 @@ func HandleverifySignature(c *gin.Context) {
 
 	userRepo := repositories.NewUserRepository(db.Client)
 
-	var requestData struct {
-		Nonce     string `json:"message"`
-		Address   string `json:"address"`
-		Signature string `json:"signature"`
-	}
-
-	// Bind JSON body to struct
-	if err := c.BindJSON(&requestData); err != nil {
+	if err := c.BindJSON(&models.VerifySignatureResponse); err != nil {
 
 		message := fmt.Sprintf("Timestamp: %s | Handler: %s | Status: %d | Response: %s", time.Now().UTC().Format(time.RFC3339), "login_handler/HandleverifySignature", http.StatusBadRequest, "error: Invalid JSON")
 		nats.NatsConnection.PublishMessage(message)
@@ -83,7 +75,7 @@ func HandleverifySignature(c *gin.Context) {
 		return
 	}
 
-	isSignatureVerified := utils.CheckSig(requestData.Address, requestData.Signature, []byte(requestData.Nonce))
+	isSignatureVerified := utils.CheckSig(models.VerifySignatureResponse.Address, models.VerifySignatureResponse.Signature, []byte(models.VerifySignatureResponse.Nonce))
 
 	if isSignatureVerified {
 		// Generate JWT token upon successful authentication
@@ -99,7 +91,6 @@ func HandleverifySignature(c *gin.Context) {
 
 		tokenString, err := token.SignedString(config.JWTSecretKey)
 		if err != nil {
-
 			message := fmt.Sprintf("Timestamp: %s | Handler: %s | Status: %d | Response: %s", time.Now().UTC().Format(time.RFC3339), "login_handler/HandleverifySignature", http.StatusInternalServerError, "error: Failed to generate token")
 			nats.NatsConnection.PublishMessage(message)
 

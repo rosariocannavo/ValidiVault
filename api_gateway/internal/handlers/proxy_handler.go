@@ -15,7 +15,6 @@ import (
 	"github.com/rosariocannavo/api_gateway/internal/nats"
 )
 
-// TODO: put initialization in a separated file
 func createReverseProxy(remote *url.URL, headers http.Header, proxyPath string) *httputil.ReverseProxy {
 	proxy := httputil.NewSingleHostReverseProxy(remote)
 
@@ -31,12 +30,12 @@ func createReverseProxy(remote *url.URL, headers http.Header, proxyPath string) 
 }
 
 // real handler
-func handleResponse(proxy *httputil.ReverseProxy, w http.ResponseWriter, r *http.Request) int {
+func handleResponse(proxy *httputil.ReverseProxy, w http.ResponseWriter, r *http.Request, path string) int {
 	rrw := models.NewResponseRecorderWriter(w)
 	proxy.ServeHTTP(rrw, r)
-	capturedStatus := rrw.StatusCode
 
-	message := fmt.Sprintf("Timestamp: %s | Handler: %s | Status: %d | Response: %s", time.Now().UTC().Format(time.RFC3339), "proxy_handler/handleResponse", capturedStatus, rrw.Body)
+	capturedStatus := rrw.StatusCode
+	message := fmt.Sprintf("Timestamp: %s | Handler: %s | Real route: %s | Status: %d | Response: %s", time.Now().UTC().Format(time.RFC3339), "proxy_handler/handleResponse", path, capturedStatus, rrw.Body)
 	nats.NatsConnection.PublishMessage(message)
 
 	return capturedStatus
@@ -53,9 +52,8 @@ func ProxyHandler(c *gin.Context) {
 
 	proxy := createReverseProxy(remote, c.Request.Header, c.Param("proxyPath")) //redirect the request to  the proxy
 
-	_, errcb := circuit_breaker.CircuitBreaker.Execute(func() (interface{}, error) { //circuite breaker here
-
-		status := handleResponse(proxy, c.Writer, c.Request)
+	_, errcb := circuit_breaker.CircuitBreaker.Execute(func() (interface{}, error) { //circuit breaker here
+		status := handleResponse(proxy, c.Writer, c.Request, c.Param("proxyPath"))
 
 		if status < 200 || status >= 300 {
 			return nil, errors.New("server error")

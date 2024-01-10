@@ -17,12 +17,11 @@ func init() {
 		Interval:    5 * time.Second, // Duration to wait before allowing another request
 		Timeout:     2 * time.Second, // Timeout for a single request attempt
 		ReadyToTrip: func(counts gobreaker.Counts) bool {
-			// failureRatio := float64(counts.TotalFailures) / float64(counts.Requests)
-			// return counts.Requests >= 3 && failureRatio >= 0.6 // Trips the circuit if failure rate exceeds 60%
 			return counts.ConsecutiveFailures > 3
 		},
 		OnStateChange: func(name string, from gobreaker.State, to gobreaker.State) {
 			fmt.Printf("Circuit breaker '%s' changed from '%s' to '%s'\n", name, from, to)
+
 			message := fmt.Sprintf("Timestamp: %s | Circuit breaker '%s' changed from '%s' to '%s'\n", time.Now().UTC().Format(time.RFC3339), name, from, to)
 			nats.NatsConnection.PublishMessage(message)
 		},

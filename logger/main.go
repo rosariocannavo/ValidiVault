@@ -17,6 +17,7 @@ var (
 		},
 	}
 )
+
 var nc *nats.Conn
 var subject = "rest_logging"
 var file *os.File
@@ -43,7 +44,6 @@ func main() {
 	http.HandleFunc("/", serveHTML)
 
 	fmt.Println("Server started on :8000")
-
 	if err := http.ListenAndServe(":8000", nil); err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
@@ -60,10 +60,11 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 		data := string(msg.Data)
 		fmt.Println("msg: ", data)
 
-		if _, err := file.WriteString(string(msg.Data) + "\n"); err != nil {
+		if _, err := file.WriteString(data + "\n"); err != nil {
 			log.Println("Error writing to file:", err)
 		}
-		err = ws.WriteJSON(data)
+
+		err = ws.WriteMessage(websocket.TextMessage, []byte(data)) // ws.WriteJSON(data)
 		if err != nil {
 			log.Printf("error: %v", err)
 		}

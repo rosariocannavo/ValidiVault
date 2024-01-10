@@ -2,6 +2,7 @@ const searchBar = document.querySelector('.search-bar');
 
 let account;
 let token;
+
 async function fetchData() {
     try {
         const response = await fetch('/get-cookie', {
@@ -33,8 +34,6 @@ document.getElementById("setButton").addEventListener('click', async function ()
     document.getElementById('response').innerHTML = '';
 
     try {
-        
-
         const productName = searchBar.value;
         searchBar.value = '';
 
@@ -72,10 +71,10 @@ document.getElementById("setButton").addEventListener('click', async function ()
         }
 
     } catch (error) {
-        // Handle errors here
         console.error('There was a problem with the fetch operation:', error);
     }
 });
+
 
 document.getElementById("getButton").addEventListener('click', async function () {
     document.getElementById('response').innerHTML = '';
@@ -117,16 +116,11 @@ document.getElementById("getButton").addEventListener('click', async function ()
                 document.getElementById("manufacturer").textContent = responseData.manufacturer;
                 document.getElementById("isRegistered").textContent = responseData.isRegistered;
             }
-
-
         } else {
             document.getElementById('bar').style.border = '2px solid red';
-
             document.getElementById('response').innerHTML = '<p>Invalid id</p>';
         }
-
     } catch (error) {
-        // Handle errors here
         console.error('There was a problem with the fetch operation:', error);
     }
 });

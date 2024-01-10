@@ -12,10 +12,10 @@ import (
 
 func RoleAuth(role string) gin.HandlerFunc {
 	return func(c *gin.Context) {
+
 		claims, ok := c.MustGet("claims").(jwt.MapClaims)
 
 		if !ok {
-
 			message := fmt.Sprintf("Timestamp: %s | Handler: %s | Status: %d | Response: %s", time.Now().UTC().Format(time.RFC3339), "middleware/RoleAuth", http.StatusForbidden, "error: Invalid token claims")
 			nats.NatsConnection.PublishMessage(message)
 
@@ -27,7 +27,6 @@ func RoleAuth(role string) gin.HandlerFunc {
 		// Extract the role from the token claims
 		tokenRole, ok := claims["role"].(string)
 		if !ok {
-
 			message := fmt.Sprintf("Timestamp: %s | Handler: %s | Status: %d | Response: %s", time.Now().UTC().Format(time.RFC3339), "middleware/RoleAuth", http.StatusForbidden, "error: Role information not found")
 			nats.NatsConnection.PublishMessage(message)
 

@@ -46,12 +46,10 @@ body {
   align-items: center;
 }
 
-/* Add margin to the buttons for spacing */
 .buttons button {
   margin-right: 10px;
 }
 
-/* Remove margin from the last button to avoid extra space */
 .buttons button:last-child {
   margin-right: 0;
 }
@@ -73,7 +71,6 @@ button:hover {
   border: 2px solid red;
 }
 
-/* For demonstration purpose - simulate card content */
 #blockValue {
   font-weight: bold;
 }

@@ -77,7 +77,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - vault_network
-    #restart: always
+    restart: always
     
   
   logger:
@@ -90,6 +90,8 @@ services:
       - "8000:8000"
     networks:
       - vault_network
+    volumes:
+      - ./log.txt:/app/message_log.txt
     restart: always
 
   

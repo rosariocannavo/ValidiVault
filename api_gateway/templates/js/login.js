@@ -15,9 +15,6 @@ document.getElementById("loginForm").addEventListener("submit", async function (
         });
         var json = JSON.stringify(object);
 
-        console.log(json)
-
-        // Send POST request to Go Gin server
         fetch("/login", {
             method: "POST",
             headers: {
@@ -74,6 +71,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     }
 });
 
+
 async function getMetaMaskAddress() {
     if (typeof window.ethereum !== 'undefined') {
         // Metamask is available
@@ -98,9 +96,6 @@ async function getMetaMaskAddress() {
 
 async function requestMetaMaskSignature(nonce) {
     // Metamask is available
-    //const nonce = "{{.Nonce}}";
-    console.log(nonce)
-
     const provider = window.ethereum;
 
     try {
@@ -135,16 +130,11 @@ async function requestMetaMaskSignature(nonce) {
             localStorage.setItem('jwtToken', token);
             localStorage.setItem('role', role);
 
-
-            console.log('Verification Response:', data);
-
-
         } else {
             throw new Error('Network response was not ok.');
         }
 
         try {
-
             const jwtToken = localStorage.getItem('jwtToken');
             const role = localStorage.getItem('role');
             console.log(jwtToken)
@@ -163,13 +153,12 @@ async function requestMetaMaskSignature(nonce) {
                     document.open();
                     document.write(htmlContent);
                     document.close();
+
                 } else if (response.status >= 400 && response.status < 500) {
                     // Handle client-side errors (4xx errors)
-                    // For example, display an error message or handle accordingly
                     console.error('Client-side error:', response.status);
                 } else if (response.status >= 500 && response.status < 600) {
                     // Handle server-side errors (5xx errors)
-                    // For example, display an error message or handle accordingly
                     console.error('Server-side error:', response.status);
                 } else {
                     // Handle other cases where response.ok is false but the status code is not in 4xx or 5xx range
@@ -195,11 +184,9 @@ async function requestMetaMaskSignature(nonce) {
 
                 } else if (response.status >= 400 && response.status < 500) {
                     // Handle client-side errors (4xx errors)
-                    // For example, display an error message or handle accordingly
                     console.error('Client-side error:', response.status);
                 } else if (response.status >= 500 && response.status < 600) {
                     // Handle server-side errors (5xx errors)
-                    // For example, display an error message or handle accordingly
                     console.error('Server-side error:', response.status);
                 } else {
                     // Handle other cases where response.ok is false but the status code is not in 4xx or 5xx range
@@ -218,6 +205,7 @@ async function requestMetaMaskSignature(nonce) {
     }
 
 }
+
 
 function stringToHex(str) {
     let hex = '';

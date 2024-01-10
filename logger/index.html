@@ -33,6 +33,14 @@
       padding: 8px 0;
       margin: 0;
     }
+
+    .log-entry:nth-child(odd) {
+      background-color: #eee; /* Color for odd lines */
+    }
+
+    .log-entry:nth-child(even) {
+      background-color: #fff; /* Color for even lines */
+    }
   </style>
 </head>
 <body>
@@ -41,6 +49,7 @@
   <div id="log"></div>
 
   <script>
+    //websocket communication
     const logElement = document.getElementById('log');
     const socket = new WebSocket('ws://localhost:8000/ws');
 
@@ -51,7 +60,7 @@
     socket.addEventListener('message', function (event) {
       const logData = document.createElement('p');
       logData.classList.add('log-entry');
-      logData.textContent = 'Received: ' + event.data;
+      logData.textContent = event.data;
       logElement.appendChild(logData);
     });
 

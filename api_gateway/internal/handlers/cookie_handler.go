@@ -12,7 +12,6 @@ import (
 func GetCookieHandler(c *gin.Context) {
 	jwtCookie, err := c.Cookie("jwtToken")
 	if err != nil {
-
 		message := fmt.Sprintf("Timestamp: %s | Handler: %s | Status: %d", time.Now().UTC().Format(time.RFC3339), "cookie_handler/GetCookieHandler", http.StatusNotFound)
 		nats.NatsConnection.PublishMessage(message)
 
@@ -21,8 +20,8 @@ func GetCookieHandler(c *gin.Context) {
 	}
 
 	accountAddressCookie, err := c.Cookie("accountAddress")
-	if err != nil {
 
+	if err != nil {
 		message := fmt.Sprintf("Timestamp: %s | Handler: %s | Status: %d", time.Now().UTC().Format(time.RFC3339), "cookie_handler/GetCookieHandler", http.StatusNotFound)
 		nats.NatsConnection.PublishMessage(message)
 
