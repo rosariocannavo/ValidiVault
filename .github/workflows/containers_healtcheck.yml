@@ -13,9 +13,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Docker
-      uses: docker/setup-docker@v2
-
     - name: Build and run Docker Compose
       run: |
         -f deploy/docker-compose.yml up -d
