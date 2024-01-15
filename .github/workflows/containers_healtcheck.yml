@@ -24,7 +24,7 @@ jobs:
         sleep 10
 
     - name: Check if containers are running
-      run: docker-compose ps
+      run: docker-compose -f deploy/docker-compose.yaml ps
 
     - name: Stop Docker Compose
       run: docker-compose -f deploy/docker-compose.yaml down
