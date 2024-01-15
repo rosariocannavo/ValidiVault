@@ -58,7 +58,8 @@ func main() {
 			c.HTML(http.StatusOK, "user_home.html", gin.H{})
 		})
 
-		userRoutes.GET("/app/*proxyPath", handlers.ProxyHandler)
+		//accept any cause it redirect PUT, POST and GET
+		userRoutes.Any("/app/*proxyPath", handlers.ProxyHandler)
 
 	}
 
@@ -74,7 +75,8 @@ func main() {
 			c.HTML(http.StatusOK, "admin_home.html", gin.H{})
 		})
 
-		adminRoutes.GET("/app/*proxyPath", handlers.ProxyHandler)
+		//accept any cause it redirect PUT, POST and GET
+		adminRoutes.Any("/app/*proxyPath", handlers.ProxyHandler)
 	}
 
 	_ = r.Run(":8080")

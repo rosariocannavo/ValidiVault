@@ -24,7 +24,7 @@ document.getElementById("getButton").addEventListener('click', async function ()
         searchBar.value = '';
         if (productId !== 0) {
             document.getElementById('bar').style.border = '2px solid green';
-            const url = `http://localhost:8080/user/app/getProduct?productId=${productId}`;
+            const url = `http://localhost:8080/user/app/product?productId=${productId}`;
 
             const secondResponse = await fetch(url, {
                 method: "GET",

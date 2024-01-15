@@ -40,10 +40,10 @@ document.getElementById("setButton").addEventListener('click', async function ()
         if (productName !== "") {
             document.getElementById('bar').style.border = '2px solid green';
 
-            const url = `http://localhost:8080/admin/app/registerProduct?account=${account}&productName=${productName}`;
+            const url = `http://localhost:8080/admin/app/product?account=${account}&productName=${productName}`;
 
             const secondResponse = await fetch(url, {
-                method: "GET",
+                method: "PUT",
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `${token}`
@@ -87,7 +87,7 @@ document.getElementById("getButton").addEventListener('click', async function ()
         if (productId !== 0) {
             document.getElementById('bar').style.border = '2px solid green';
 
-            const url = `http://localhost:8080/admin/app/getProduct?productId=${productId}`;
+            const url = `http://localhost:8080/admin/app/product?productId=${productId}`;
 
             const secondResponse = await fetch(url, {
                 method: "GET",

@@ -9,7 +9,7 @@ const port = 3000;
 const contract = new web3.eth.Contract(contractABI, contractAddress);
 
 // Endpoint to interact with the contract, this route will be contacted by the proxy 
-app.get('/registerProduct', async (req, res) => {
+app.put('/product', async (req, res) => {
     try {
         const account = req.query.account; // Get account from query parameters or request body
 		const productName = req.query.productName
@@ -37,7 +37,7 @@ app.get('/registerProduct', async (req, res) => {
     }
 });
 
-app.get('/getProduct', async (req, res) => {
+app.get('/product', async (req, res) => {
     try {
 		const productId = req.query.productId
 		const retrievedValue = await contract.methods.getProduct(productId).call();
