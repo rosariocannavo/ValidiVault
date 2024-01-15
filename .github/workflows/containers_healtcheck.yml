@@ -1,0 +1,28 @@
+name: Docker Compose Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-docker-compose:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Docker
+      uses: docker/setup-docker@v2
+
+    - name: Build and run Docker Compose
+      run: |
+        -f deploy/docker-compose.yml up -d
+        sleep 10 # Adjust as needed to give containers time to start
+
+    - name: Check if containers are running
+      run: docker-compose ps
+
+    - name: Stop Docker Compose
+      run: docker-compose -f deploy/docker-compose.yml down
