@@ -189,7 +189,7 @@ GET /user/user_home
 #### Call the real server by proxy to check if a product is registered in the blockchain If authenticated as users
 
 ```http
-GET /user/app/getProduct
+GET /user/app/product
 ```
 
 | Parameter | Type     | Description                       |
@@ -202,7 +202,7 @@ GET /user/app/getProduct
 #### Call the real server by proxy to check if a product is registered in the blockchain If authenticated as admin
 
 ```http
-GET /admin/app/getProduct
+GET /admin/app/product
 ```
 
 | Parameter | Type     | Description                       |
@@ -214,7 +214,7 @@ GET /admin/app/getProduct
 #### Call the real server by proxy to register a product in  the blockchain
 
 ```http
-GET /admin/app/registerProduct
+PUT /admin/app/product
 ```
 
 | Parameter | Type     | Description                       |
@@ -226,7 +226,7 @@ GET /admin/app/registerProduct
 
 ## Running Truffle Tests
 
-the smart contract testing environment is fully automated and managed by Truffle.
+The smart contract testing environment is fully automated and managed by Truffle.
 
 Go to Truffle project
 
@@ -237,6 +237,20 @@ Run the following command:
 
 ```bash
 truffle test 
+```
+
+## Running Api Gateway Mock Test
+
+you can run a test suite that checks the operation of the rate limiter, circuit breaker, and also tests the registration and login routes
+
+Go to Api Gateway project test directory:
+```bash
+cd api_gateway/internal/test 
+```
+Launches test suite:
+
+```bash
+go test . 
 ```
 ## Useful links 
 
