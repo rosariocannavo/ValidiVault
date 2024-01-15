@@ -20,7 +20,7 @@ jobs:
 
     - name: Build and run Docker Compose
       run: |
-        -f deploy/docker-compose.yml up -d
+        docker-compose -f deploy/docker-compose.yml up -d
         sleep 10
 
     - name: Check if containers are running
