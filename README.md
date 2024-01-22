@@ -34,7 +34,7 @@ The system, built according to state-of-the-art design principles, boasts a micr
 * **Infura**: Infura is a popular infrastructure-as-a-service provider specifically tailored for Ethereum and other blockchain networks. It offers developers easy access to Ethereum nodes without the need to run and maintain their own. Developers use Infura's API endpoints to interact with the Ethereum blockchain, send transactions, query data, and access various functionalities without managing the complexities of running a full Ethereum node. This allows for rapid development of decentralized applications (dApps) and other blockchain-related projects without the overhead of node maintenance or syncing. Infura provides reliable and scalable infrastructure, serving as a gateway for developers to connect their applications to the Ethereum network, making it an essential tool in the Ethereum ecosystem for seamless and efficient blockchain development.
 
 # draft system architecture
-![image](https://drive.google.com/uc?export=view&id=149DMOOdhuPcWkt2IoA7apSeFe6cE8r25)
+![image](https://drive.google.com/uc?export=view&id=1KPH8hfV-L9PRpMpF_GGgatZ0i_w6_DQ3)
 ## Run Locally
 Install and Run Ganache client and create a local ethereum Blockchain
 ```bash
@@ -138,7 +138,7 @@ POST /registration
 #### Returns session user cookies
 
 ```http
-GET /get-cookie 
+GET /cookie 
 ```
 
 #### Login the user
