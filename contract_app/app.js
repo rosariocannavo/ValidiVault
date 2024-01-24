@@ -14,7 +14,7 @@ app.put('/product', async (req, res) => {
         const account = req.query.account; // Get account from query parameters or request body
 		const productName = req.query.productName
 		//the product id is created by the first 10 char of the hash of account address and product name
-		const productId = web3.utils.soliditySha3(account, productName).substring(0, 10); 
+		const productId = web3.utils.soliditySha3(account, productName, Date.now()).substring(0, 10); 
 
         // Set a new value using the registerProduct function (transaction)
         const tx = await contract.methods.registerProduct(productId, productName).send({
